@@ -1,34 +1,32 @@
 import platform
-import psutil
+from datetime import datetime
+
+# import psutil
 
 my_system = platform.uname()
 
-print(f"System: {my_system.system}")
-print(f"Node Name: {my_system.node}")
-print(f"Release: {my_system.release}")
-print(f"Version: {my_system.version}")
-print(f"Machine: {my_system.machine}")
-print(f"Processor: {my_system.processor}")
+
+def general_info(report_time: str):
+    with open("report_" + report_time + ".txt", "a") as report:
+        report.write("GENERAL INFO \n")
+        report.write("System: " + my_system.system + "\n")
+        report.write("Node Name: " + my_system.node + "\n")
+        report.write("Release: " + my_system.release + "\n")
+        report.write("Version: " + my_system.version + "\n")
+        report.write("Machine: " + my_system.machine + "\n")
+        report.write("Processor: " + my_system.processor + "\n")
 
 
-print(f"Memory :{psutil.virtual_memory()}")
-print(f"Memory :{psutil.virtual_memory()[0]}")
-print(type(psutil.virtual_memory()[0]))
-mem = psutil.virtual_memory()[0]
-print(mem // 1024 // 1024)
-print(type({psutil.virtual_memory()}))
+# Gather info about disk
 
-print(psutil.boot_time())
-print(int(psutil.boot_time()))
+# Gather info about cpu
 
-print(psutil.swap_memory())
-print(psutil.disk_usage('/'))
-print(psutil.disk_partitions())
-print(psutil.disk_io_counters())
+# Gather info about net
 
-print(psutil.cpu_count())
-print(psutil.cpu_percent())
-print(psutil.cpu_times())
-print(psutil.cpu_stats())
+# Gather info about mem
 
 # print(psutil.test())
+
+if __name__ == "__main__":
+    timestamp = datetime.now().strftime("%d.%m.%Y_%H.%M.%S")
+    general_info(timestamp)
