@@ -1,15 +1,13 @@
-# nixvice
+# reporter
 
-Test Python Service which make some logs
+Report about your castle
 
-Create system user
-`useradd -r -s /bin/false test-pyt-ser`
+## Prehistory
+Many days ago I just started to learn some interesting things in Python.
 
-Deploy unit in 
-`/etc/systemd/system/`
+> I will transform it to useful program  
+> (c) Author
 
-Deploy .py files in
-`/usr/local/lib/test-pyt-ser/`
+This program is help to realize how the resources in OS are utilized.
 
-Make sure the rights is
-`644 root:root`
+Enjoy.
