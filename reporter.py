@@ -1,6 +1,6 @@
 import platform
 from datetime import datetime
-
+from typing import Dict
 import psutil
 
 # Pass args
@@ -24,7 +24,7 @@ def general_info(report_time: str):
         report.write("\n")
 
 
-def get_disk_usage() -> dict:
+def get_disk_usage() -> Dict[str: int]:
     """
     Create dictionary from psutil output
     :return:
@@ -36,11 +36,11 @@ def get_disk_usage() -> dict:
 
     disk_util_mem.append(psutil.disk_usage("/")[-1])
 
-    disk_usage_dict = {
+    disk_usage = {
         disk_util_kind[i]: disk_util_mem[i] for i in range(len(psutil.disk_usage("/")))
     }
 
-    return disk_usage_dict
+    return disk_usage
 
 
 def disk_info(report_time: str):
