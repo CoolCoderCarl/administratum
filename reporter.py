@@ -3,7 +3,6 @@ from datetime import datetime
 
 import psutil
 
-# MD not txt
 # Pass args
 
 
@@ -71,6 +70,7 @@ def cpu_usage(report_time: str):
     print(psutil.cpu_stats())
     print(psutil.cpu_times())
     print(psutil.cpu_freq())
+
 
 # Gather info about net
 
