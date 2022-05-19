@@ -1,0 +1,12 @@
+{
+    "categories": [
+      {
+        "title": "## Features",
+        "labels": ["develop"]
+      },
+      {
+        "title": "## Release",
+        "labels": ["release"]
+      }
+    ]
+}
