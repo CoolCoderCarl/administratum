@@ -1,6 +1,7 @@
 import platform
 from datetime import datetime
 from typing import Dict
+
 import psutil
 
 # Pass args
@@ -24,7 +25,7 @@ def general_info(report_time: str):
         report.write("\n")
 
 
-def get_disk_usage() -> Dict[str: int]:
+def get_disk_usage() -> Dict[str:int]:
     """
     Create dictionary from psutil output
     :return:
