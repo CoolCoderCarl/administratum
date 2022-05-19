@@ -3,8 +3,7 @@ name: Code Quality
 on:
   push:
     branches: [ feature/* ]
-    branches-ignore:
-      - 'pipeline/CI_*'
+    branches-ignore: [ pipeline/CI_* ]
 
 jobs:
   code_quality:

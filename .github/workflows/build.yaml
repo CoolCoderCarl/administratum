@@ -4,8 +4,7 @@ on:
   pull_request:
     branches: [ develop ]
   push:
-    branches-ignore:
-      - 'pipeline/CI_*'
+    branches-ignore: [ pipeline/CI_* ]
 
 jobs:
 
