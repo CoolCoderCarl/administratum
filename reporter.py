@@ -9,7 +9,7 @@ import psutil
 
 def general_info(report_time: str):
     """
-
+    Gather general info about host system
     :param report_time:
     :return:
     """
@@ -73,9 +73,9 @@ def cpu_usage(report_time: str):
         report.write("Frequency: " + str(psutil.cpu_freq()[0]) + "  \n")
 
 
-# Gather info about net
-
 # Gather info about mem
+
+# Gather info about net
 
 # print(psutil.test())
 
