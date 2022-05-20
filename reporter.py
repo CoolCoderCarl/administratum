@@ -83,12 +83,10 @@ def get_mem_usage() -> Dict[str, Union[int, float]]:
 
     mem_percents = mem_usage[2]
 
-    mem_usage_list = list(mem_usage[0:2]+mem_usage[3:5])
+    mem_usage_list = list(mem_usage[0:2] + mem_usage[3:5])
     mem_usage_len = len(mem_usage_list)
 
-    mem_util_mem = [
-        mem_usage_list[idx] // (1024**3) for idx in range(mem_usage_len)
-    ]
+    mem_util_mem = [mem_usage_list[idx] // (1024**3) for idx in range(mem_usage_len)]
 
     mem_util_mem.append(mem_percents)
     mem_util_len = len(mem_util_mem)
@@ -123,7 +121,7 @@ def mem_info(report_time: str):
 
 if __name__ == "__main__":
     timestamp = datetime.now().strftime("%d.%m.%Y_%H.%M.%S")
-    # general_info(timestamp)
-    # disk_info(timestamp)
-    # cpu_info(timestamp)
-    # mem_info(timestamp)
+    general_info(timestamp)
+    disk_info(timestamp)
+    cpu_info(timestamp)
+    mem_info(timestamp)
