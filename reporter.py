@@ -9,7 +9,7 @@ import psutil
 
 def general_info(report_time: str):
     """
-
+    Gather general info about host system
     :param report_time:
     :return:
     """
@@ -27,7 +27,7 @@ def general_info(report_time: str):
 
 def get_disk_usage() -> Dict[str, Union[int, float]]:
     """
-    Generates a human-readable disk usage info from ``psutil.disk_usage("/")``.
+    Generates a human-readable DISK usage info from ``psutil.disk_usage("/")``.
 
     :return: A dict with 4 main fields (Total, Used, Free, Percent) and rounded disk usage.
     """
@@ -47,7 +47,7 @@ def get_disk_usage() -> Dict[str, Union[int, float]]:
 
 def disk_info(report_time: str):
     """
-    Gather information about disk usage
+    Gather information about DISK usage
     :param report_time:
     :return:
     """
@@ -61,7 +61,7 @@ def disk_info(report_time: str):
         report.write("\n")
 
 
-def cpu_usage(report_time: str):
+def cpu_info(report_time: str):
     """
     Gather information about CPU usage
     :param report_time:
@@ -73,9 +73,48 @@ def cpu_usage(report_time: str):
         report.write("Frequency: " + str(psutil.cpu_freq()[0]) + "  \n")
 
 
-# Gather info about net
+def get_mem_usage() -> Dict[str, Union[int, float]]:
+    """
+    Generates a human-readable MEM usage info.
 
-# Gather info about mem
+    :return: A dict with 5 main fields (Total, Available, Used, Free, Percent) and rounded mem usage.
+    """
+    mem_usage = psutil.virtual_memory()
+
+    mem_percents = mem_usage[2]
+
+    mem_usage_list = list(mem_usage[0:2] + mem_usage[3:5])
+    mem_usage_len = len(mem_usage_list)
+
+    mem_util_mem = [mem_usage_list[idx] // (1024**3) for idx in range(mem_usage_len)]
+
+    mem_util_mem.append(mem_percents)
+    mem_util_len = len(mem_util_mem)
+
+    mem_util_kind = ["total", "available", "used", "free", "percent"]
+    result = {mem_util_kind[idx]: mem_util_mem[idx] for idx in range(mem_util_len)}
+
+    return result
+
+
+def mem_info(report_time: str):
+    """
+    Gather information about MEM usage
+    :param report_time:
+    :return:
+    """
+    with open("report_" + report_time + ".md", "a") as report:
+        report.write("## MEMORY USAGE  \n")
+        for key in get_mem_usage():
+            if "percent" in key:
+                report.write(key + " : " + str(get_mem_usage()[key]) + "%  \n")
+            else:
+                report.write(key + " : " + str(get_mem_usage()[key]) + " GB  \n")
+        report.write("\n")
+    # print(psutil.swap_memory())
+
+
+# Gather info about net
 
 # print(psutil.test())
 
@@ -84,4 +123,5 @@ if __name__ == "__main__":
     timestamp = datetime.now().strftime("%d.%m.%Y_%H.%M.%S")
     general_info(timestamp)
     disk_info(timestamp)
-    cpu_usage(timestamp)
+    cpu_info(timestamp)
+    mem_info(timestamp)
