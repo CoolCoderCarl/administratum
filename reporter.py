@@ -1,3 +1,4 @@
+import codecs
 import platform
 from datetime import datetime
 from typing import Dict, Union
@@ -14,7 +15,7 @@ def general_info(report_time: str):
     :return:
     """
     system = platform.uname()
-    with open("report_" + report_time + ".md", "a") as report:
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
         report.write("## GENERAL INFO \n")
         report.write("System: " + system.system + "  \n")
         report.write("Node Name: " + system.node + "  \n")
@@ -51,7 +52,7 @@ def disk_info(report_time: str):
     :param report_time:
     :return:
     """
-    with open("report_" + report_time + ".md", "a") as report:
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
         report.write("## DISK USAGE  \n")
         for key in get_disk_usage():
             if "percent" in key:
@@ -67,10 +68,11 @@ def cpu_info(report_time: str):
     :param report_time:
     :return:
     """
-    with open("report_" + report_time + ".md", "a") as report:
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
         report.write("## CPU USAGE  \n")
         report.write("Logical processors: " + str(psutil.cpu_count()) + "  \n")
         report.write("Frequency: " + str(psutil.cpu_freq()[0]) + "  \n")
+        report.write("\n")
 
 
 def get_mem_usage() -> Dict[str, Union[int, float]]:
@@ -103,7 +105,7 @@ def mem_info(report_time: str):
     :param report_time:
     :return:
     """
-    with open("report_" + report_time + ".md", "a") as report:
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
         report.write("## MEMORY USAGE  \n")
         for key in get_mem_usage():
             if "percent" in key:
@@ -114,7 +116,22 @@ def mem_info(report_time: str):
     # print(psutil.swap_memory())
 
 
-# Gather info about net
+def net_info(report_time: str):
+    """
+    Gather information about NET usage
+    :param report_time:
+    :return:
+    """
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+        report.write("## NETWORK USAGE  \n")
+        net_if_address = psutil.net_if_addrs()
+        for i in net_if_address:
+            report.write(i + "  \n")
+            # print(net_if_address[i][1])
+            report.write(str(net_if_address[i][1][1:3]) + "  \n")
+        report.write("\n")
+    # print(psutil.net_if_stats())
+
 
 # print(psutil.test())
 
@@ -125,3 +142,4 @@ if __name__ == "__main__":
     disk_info(timestamp)
     cpu_info(timestamp)
     mem_info(timestamp)
+    net_info(timestamp)
