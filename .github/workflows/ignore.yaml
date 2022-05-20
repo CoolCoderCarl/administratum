@@ -8,7 +8,6 @@ on:
     paths-ignore:
       - 'README.md'
       - '.gitignore'
-      - '.github/**'
       - 'changelog.json'
       - 'test-pyt-ser.service'
 
