@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 # Report log
-report_*.txt
+report_*.md
