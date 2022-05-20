@@ -184,6 +184,6 @@ jobs:
 
             Branch: ${{ github.ref }}
 
-            <b>Release URL:</b> https://github.com/${{ github.repository }}/releases/tag/${{ needs.release.outputs.get_current_tag }}
+            <b>Release URL:</b> https://github.com/${{ github.repository }}/releases/tag/${{ needs.prepare.outputs.get_current_tag }}
 
             See changes: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
