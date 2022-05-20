@@ -46,6 +46,7 @@ def get_disk_usage() -> Dict[str, Union[int, float]]:
     return result
 
 
+# Use one method
 def disk_info(report_time: str):
     """
     Gather information about DISK usage
@@ -55,10 +56,10 @@ def disk_info(report_time: str):
     with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
         report.write("## DISK USAGE  \n")
         for key in get_disk_usage():
-            if "percent" in key:
+            if "percent" in key.lower():
                 report.write(key + " : " + str(get_disk_usage()[key]) + "%  \n")
             else:
-                report.write(key + " : " + str(get_disk_usage()[key]) + " GB  \n")
+                report.write(key + " : " + str(get_disk_usage()[key]) + "GB  \n")
         report.write("\n")
 
 
@@ -78,7 +79,6 @@ def cpu_info(report_time: str):
 def get_mem_usage() -> Dict[str, Union[int, float]]:
     """
     Generates a human-readable MEM usage info.
-
     :return: A dict with 5 main fields (Total, Available, Used, Free, Percent) and rounded mem usage.
     """
     mem_usage = psutil.virtual_memory()
@@ -93,12 +93,13 @@ def get_mem_usage() -> Dict[str, Union[int, float]]:
     mem_util_mem.append(mem_percents)
     mem_util_len = len(mem_util_mem)
 
-    mem_util_kind = ["total", "available", "used", "free", "percent"]
+    mem_util_kind = ["Total", "Available", "Used", "Free", "Percent"]
     result = {mem_util_kind[idx]: mem_util_mem[idx] for idx in range(mem_util_len)}
 
     return result
 
 
+# Use one method
 def mem_info(report_time: str):
     """
     Gather information about MEM usage
@@ -108,10 +109,10 @@ def mem_info(report_time: str):
     with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
         report.write("## MEMORY USAGE  \n")
         for key in get_mem_usage():
-            if "percent" in key:
+            if "percent" in key.lower():
                 report.write(key + " : " + str(get_mem_usage()[key]) + "%  \n")
             else:
-                report.write(key + " : " + str(get_mem_usage()[key]) + " GB  \n")
+                report.write(key + " : " + str(get_mem_usage()[key]) + "GB  \n")
         report.write("\n")
     # print(psutil.swap_memory())
 
