@@ -8,5 +8,8 @@
         "title": "## Release",
         "labels": ["release"]
       }
-    ]
+    ],
+    "sort": "ASC",
+    "pr_template": "- ${{TITLE}}\n   - PR: #${{NUMBER}}",
+    "max_pull_requests": 10
 }
