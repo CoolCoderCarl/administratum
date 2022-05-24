@@ -86,7 +86,9 @@ def get_mem_usage() -> Dict[str, Union[int, float]]:
 
     mem_usage_list = list(mem_usage[0:2] + mem_usage[3:5])
 
-    mem_util_mem = [mem_usage_list[idx] // (1024**3) for idx in range(len(mem_usage_list))]
+    mem_util_mem = [
+        mem_usage_list[idx] // (1024**3) for idx in range(len(mem_usage_list))
+    ]
 
     mem_util_mem.append(mem_percents)
 
@@ -121,11 +123,15 @@ def get_swap_usage() -> Dict[str, Union[int, float]]:
     swap_usage = psutil.swap_memory()
 
     swap_usage_list = list(swap_usage)[:3]
-    swap_usage_swap = [swap_usage_list[idx] // (1024**3) for idx in range(len(swap_usage_list))]
+    swap_usage_swap = [
+        swap_usage_list[idx] // (1024**3) for idx in range(len(swap_usage_list))
+    ]
     swap_usage_swap.append(swap_usage[3])
 
     swap_util_kind = ["Total", "Used", "Free", "Percent"]
-    result = {swap_util_kind[idx]: swap_usage_swap[idx] for idx in range(len(swap_usage_swap))}
+    result = {
+        swap_util_kind[idx]: swap_usage_swap[idx] for idx in range(len(swap_usage_swap))
+    }
 
     return result
 
