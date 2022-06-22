@@ -7,7 +7,6 @@ on:
       - 'README.md'
       - '.gitignore'
       - 'changelog.json'
-      - 'test-pyt-ser.service'
 
 jobs:
 
@@ -116,7 +115,10 @@ jobs:
             ASSET_MIME: application/x-binary
 
     steps:
-      - uses: actions/checkout@v2
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v2
         with:
@@ -178,7 +180,7 @@ jobs:
 
             <b>WorkFlows:</b> <a href="https://github.com/${{ github.repository }}/actions">ActionsList</a>
 
-            Commit with tag: ${{ needs.release.outputs.get_current_tag }}
+            Commit with tag: ${{ needs.prepare.outputs.get_current_tag }}
 
             Repository: ${{ github.repository }}
 
