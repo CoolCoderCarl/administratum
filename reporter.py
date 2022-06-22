@@ -180,7 +180,7 @@ def network_interfaces_status(report_time: str):
 def net_info(report_time: str):
     """
     Gather information about NET usage
-    Call another func which provide interface statuses
+    Call network_interfaces_status func which provide interface statuses
     :param report_time:
     :return:
     """
