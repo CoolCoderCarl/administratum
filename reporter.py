@@ -144,7 +144,7 @@ def swap_info(report_time: str):
     :return:
     """
     with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
-        report.write("## SWAP USAGE  \n")
+        report.write("### SWAP USAGE  \n")
         for key in get_swap_usage():
             if "percent" in key.lower():
                 report.write(key + " : " + str(get_swap_usage()[key]) + "%  \n")
@@ -169,11 +169,13 @@ def network_interfaces_status(report_time: str):
                 + " | UP: "
                 + str(i[1][0])
                 + " | Speed: "
-                + str(i[1][2]) + " MB"
+                + str(i[1][2])
+                + " MB"
                 + " | MTU: "
-                + str(i[1][3]) + " bytes"
+                + str(i[1][3])
+                + " bytes"
             )
-            report.write("\n")
+            report.write("  \n")
         report.write("\n")
 
 
