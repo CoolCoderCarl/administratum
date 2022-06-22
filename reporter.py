@@ -6,6 +6,7 @@ from typing import Dict, Union
 import psutil
 
 # Pass args
+# If args not pass - just create full report
 
 
 def general_info(report_time: str):
@@ -152,9 +153,34 @@ def swap_info(report_time: str):
         report.write("\n")
 
 
+def network_interfaces_status(report_time: str):
+    """
+    Gather information about interfaces statuses
+    :param report_time:
+    :return:
+    """
+    net_activity = psutil.net_if_stats()
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+        report.write("### INTERFACES STATUS  \n")
+        for i in net_activity.items():
+            report.write(
+                "Connection Type Name: "
+                + str(i[0])
+                + " | UP: "
+                + str(i[1][0])
+                + " | Speed: "
+                + str(i[1][2])
+                + " | MTU: "
+                + str(i[1][3])
+            )
+            report.write("\n")
+        report.write("\n")
+
+
 def net_info(report_time: str):
     """
     Gather information about NET usage
+    Call network_interfaces_status func which provide interface statuses
     :param report_time:
     :return:
     """
@@ -166,7 +192,8 @@ def net_info(report_time: str):
             # print(net_if_address[i][1])
             report.write(str(net_if_address[i][1][1:3]) + "  \n")
         report.write("\n")
-    # print(psutil.net_if_stats())
+
+    network_interfaces_status(report_time)
 
 
 # print(psutil.test())
