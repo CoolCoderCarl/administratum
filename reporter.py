@@ -169,9 +169,9 @@ def network_interfaces_status(report_time: str):
                 + " | UP: "
                 + str(i[1][0])
                 + " | Speed: "
-                + str(i[1][2])
+                + str(i[1][2]) + " MB"
                 + " | MTU: "
-                + str(i[1][3])
+                + str(i[1][3]) + " bytes"
             )
             report.write("\n")
         report.write("\n")
