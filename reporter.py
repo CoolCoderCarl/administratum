@@ -29,9 +29,8 @@ def general_info(report_time: str):
 
 def get_disk_usage() -> Dict[str, Union[int, float]]:
     """
-    Generates a human-readable DISK usage info from ``psutil.disk_usage("/")``.
-
-    :return: A dict with 4 main fields (Total, Used, Free, Percent) and rounded disk usage.
+    Generates a human-readable DISK usage info from ``psutil.disk_usage("/")``
+    :return: A dict with 4 main fields (Total, Used, Free, Percent) and rounded disk usage
     """
     disk_usage = psutil.disk_usage("/")
 
@@ -76,50 +75,10 @@ def cpu_info(report_time: str):
         report.write("\n")
 
 
-def get_mem_usage() -> Dict[str, Union[int, float]]:
-    """
-    Generates a human-readable MEM usage info.
-    :return: A dict with 5 main fields (Total, Available, Used, Free, Percent) and rounded mem usage.
-    """
-    mem_usage = psutil.virtual_memory()
-
-    mem_percents = mem_usage[2]
-
-    mem_usage_list = list(mem_usage[0:2] + mem_usage[3:5])
-
-    mem_util_mem = [
-        mem_usage_list[idx] // (1024**3) for idx in range(len(mem_usage_list))
-    ]
-
-    mem_util_mem.append(mem_percents)
-
-    mem_util_kind = ["Total", "Available", "Used", "Free", "Percent"]
-    result = {mem_util_kind[idx]: mem_util_mem[idx] for idx in range(len(mem_util_mem))}
-
-    return result
-
-
-# Use one method
-def mem_info(report_time: str):
-    """
-    Gather information about MEM usage
-    :param report_time:
-    :return:
-    """
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
-        report.write("## MEMORY USAGE  \n")
-        for key in get_mem_usage():
-            if "percent" in key.lower():
-                report.write(key + " : " + str(get_mem_usage()[key]) + "%  \n")
-            else:
-                report.write(key + " : " + str(get_mem_usage()[key]) + "GB  \n")
-        report.write("\n")
-
-
 def get_swap_usage() -> Dict[str, Union[int, float]]:
     """
-    Generates a human-readable SWAP usage info.
-    :return: A dict with 4 main fields (Total, Used, Free, Percent) and rounded swap usage.
+    Generates a human-readable SWAP usage info
+    :return: A dict with 4 main fields (Total, Used, Free, Percent) and rounded swap usage
     """
     swap_usage = psutil.swap_memory()
 
@@ -151,6 +110,49 @@ def swap_info(report_time: str):
             else:
                 report.write(key + " : " + str(get_swap_usage()[key]) + "GB  \n")
         report.write("\n")
+
+
+def get_mem_usage() -> Dict[str, Union[int, float]]:
+    """
+    Generates a human-readable MEM usage info
+    :return: A dict with 5 main fields (Total, Available, Used, Free, Percent) and rounded mem usage
+    """
+    mem_usage = psutil.virtual_memory()
+
+    mem_percents = mem_usage[2]
+
+    mem_usage_list = list(mem_usage[0:2] + mem_usage[3:5])
+
+    mem_util_mem = [
+        mem_usage_list[idx] // (1024**3) for idx in range(len(mem_usage_list))
+    ]
+
+    mem_util_mem.append(mem_percents)
+
+    mem_util_kind = ["Total", "Available", "Used", "Free", "Percent"]
+    result = {mem_util_kind[idx]: mem_util_mem[idx] for idx in range(len(mem_util_mem))}
+
+    return result
+
+
+# Use one method
+def mem_info(report_time: str):
+    """
+    Gather information about MEM usage
+    Call swap_info func which provide information about SWAP usage
+    :param report_time:
+    :return:
+    """
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+        report.write("## MEMORY USAGE  \n")
+        for key in get_mem_usage():
+            if "percent" in key.lower():
+                report.write(key + " : " + str(get_mem_usage()[key]) + "%  \n")
+            else:
+                report.write(key + " : " + str(get_mem_usage()[key]) + "GB  \n")
+        report.write("\n")
+
+    swap_info(report_time)
 
 
 def network_interfaces_status(report_time: str):
@@ -207,5 +209,4 @@ if __name__ == "__main__":
     disk_info(timestamp)
     cpu_info(timestamp)
     mem_info(timestamp)
-    swap_info(timestamp)
     net_info(timestamp)
