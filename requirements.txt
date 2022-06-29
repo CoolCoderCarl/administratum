@@ -1,5 +1,5 @@
-psutil~=5.9.0
 black
-speedtest-cli==2.1.3
 isort
 pyinstaller
+psutil~=5.9.0
+speedtest-cli~=2.1.3
