@@ -4,9 +4,11 @@ from datetime import datetime
 from typing import Dict, Union
 
 import psutil
+import speedtest
 
 # Pass args
 # If args not pass - just create full report
+# verbosity
 
 
 def general_info(report_time: str):
@@ -181,6 +183,35 @@ def network_interfaces_status(report_time: str):
         report.write("\n")
 
 
+def network_speed(report_time: str):
+    """
+    Report about upload and download speed of internet connection
+    :param report_time:
+    :return:
+    """
+    speed_test = speedtest.Speedtest()
+    download_speed = speed_test.download()
+    upload_speed = speed_test.upload(pre_allocate=False)
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+        report.write("### NETWORK SPEED  \n")
+        report.write(
+            "#### DOWNLOAD  \n"
+            + str(int(download_speed))
+            + " bytes. "
+            + str(int(download_speed / 1024))
+            + " MB."
+            + "  \n"
+        )
+        report.write(
+            "#### UPLOAD  \n"
+            + str(int(upload_speed))
+            + " bytes. "
+            + str((upload_speed / 1024))
+            + " MB."
+            + "  \n"
+        )
+
+
 def net_info(report_time: str):
     """
     Gather information about NET usage
@@ -198,6 +229,7 @@ def net_info(report_time: str):
         report.write("\n")
 
     network_interfaces_status(report_time)
+    network_speed(report_time)
 
 
 # print(psutil.test())
