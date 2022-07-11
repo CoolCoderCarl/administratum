@@ -1,14 +1,21 @@
 import codecs
+import json
 import platform
 from datetime import datetime
 from typing import Dict, Union
 
 import psutil
+import requests
 import speedtest
+
+# Using in provider_info func to retrieve information about provider
+IP_SITE = "http://ipinfo.io/"
 
 # Pass args
 # If args not pass - just create full report
 # verbosity
+
+timestamp = datetime.now().strftime("%d.%m.%Y_%H.%M.%S")
 
 
 def general_info(report_time: str):
@@ -183,6 +190,30 @@ def network_interfaces_status(report_time: str):
         report.write("\n")
 
 
+def provider_info(report_time: str):
+    """
+    Get provider info & write down to report file
+    Try-expect in case of connection error
+    :param report_time:
+    :return:
+    """
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+        report.write("### PROVIDER INFO  \n")
+        try:
+            get_provider_info = json.loads(requests.get(IP_SITE).text)
+            ignored_value = ["city", "region", "loc", "postal", "readme"]
+            for k, v in get_provider_info.items():
+                if k not in ignored_value:
+                    if k == "ip":
+                        report.write(k.upper() + ": " + v + "  \n")
+                    else:
+                        report.write(k.capitalize() + ": " + v + "  \n")
+            report.write("\n")
+        except ConnectionError as connection_error:
+            report.write(str(connection_error))
+            report.write("\n")
+
+
 def network_speed(report_time: str):
     """
     Report about upload and download speed of internet connection
@@ -216,6 +247,8 @@ def net_info(report_time: str):
     """
     Gather information about NET usage
     Call network_interfaces_status func which provide interface statuses
+    Call provider_info func which provide information about provider, some info were ignored
+    Call network_speed func which provide information about upload & download internet connection speed
     :param report_time:
     :return:
     """
@@ -229,6 +262,7 @@ def net_info(report_time: str):
         report.write("\n")
 
     network_interfaces_status(report_time)
+    provider_info(timestamp)
     network_speed(report_time)
 
 
@@ -236,7 +270,6 @@ def net_info(report_time: str):
 
 
 if __name__ == "__main__":
-    timestamp = datetime.now().strftime("%d.%m.%Y_%H.%M.%S")
     general_info(timestamp)
     disk_info(timestamp)
     cpu_info(timestamp)
