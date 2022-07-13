@@ -14,12 +14,30 @@ Enjoy.
 
 
 ## How to use
+There are two ways to use this program. 
+
+**First** - just click on the program, in that case will provide full report about system.  
+**Second** - provide one or more keys like `--disk` & `--cpu`, just check `--help`.
+
+*Always provide information about the system in general.*
+
 The program provides information about a computers resources such as:  
 1. Disk
 2. CPU
-3. Memory and swap
+3. Memory & swap
 4. Network
 
-Also provided information about the system in general 
+While the program running the information about runtime for every function is a shown bit by bit.
 
-For use just double-click on the program. In future will be available to use like CLI provide the args
+### Example
+For only **Disk** report:  
+`reporter.exe --disk`
+
+For **Disk** & **CPU** report:  
+`reporter.exe --disk --cpu`
+
+For **Disk**, **CPU** & **Memory & swap** report:  
+`reporter.exe --disk --cpu --mem`
+
+For only **Network** report:  
+`reporter.exe --net`
