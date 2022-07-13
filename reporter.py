@@ -323,10 +323,12 @@ def net_info(report_time: str):
     print("Network info provided.")
 
 
+# print(psutil.cpu_times_percent())
 # print(psutil.test())
 
 
 if __name__ == "__main__":
+    # Fix excluding
     if not (sys.argv[1:]):
         general_info(timestamp)
         disk_info(timestamp)
