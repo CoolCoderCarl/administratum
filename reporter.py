@@ -18,7 +18,7 @@ def get_args():
     :return:
     """
     root_parser = argparse.ArgumentParser(
-        prog="internet_checker",
+        prog="reporter",
         description="""Report about the castle""",
         epilog="""(c) CoolCoderCarl""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
