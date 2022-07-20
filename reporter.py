@@ -48,7 +48,7 @@ timestamp = datetime.now().strftime("%d.%m.%Y_%H.%M.%S")
 
 def general_info(report_time: str):
     """
-    Gather general info about host system
+    Report general info about host system
     :param report_time:
     :return:
     """
@@ -88,7 +88,7 @@ def get_disk_usage() -> Dict[str, Union[int, float]]:
 # Use one method
 def disk_info(report_time: str):
     """
-    Gather information about DISK usage
+    Report information about DISK usage
     :param report_time:
     :return:
     """
@@ -105,9 +105,45 @@ def disk_info(report_time: str):
     print("Disk info provided.")
 
 
+def get_cpu_percent_usage() -> Dict[str, Union[int, float]]:
+    """
+    Generates a human-readable CPU percent usage info
+    :return: A dict with 3 main fields (User, System, Idle)
+    """
+    cpu_times_percent_list = []
+
+    cpu_times_percent_usage = ["User", "System", "Idle"]
+
+    for i in psutil.cpu_times_percent()[:3]:
+        cpu_times_percent_list.append(i)
+
+    result = {
+        cpu_times_percent_usage[idx]: cpu_times_percent_list[idx]
+        for idx in range(len(cpu_times_percent_usage))
+    }
+    return result
+
+
+def cpu_times_percent_info(report_time: str):
+    """
+    Report information about CPU times in percents
+    :param report_time:
+    :return:
+    """
+    print("CPU times percent info providing...")
+    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+        report.write("### CPU TIMES  \n")
+        for key, value in get_cpu_percent_usage().items():
+            report.write(key + " : " + str(value) + "%  \n")
+        report.write("\n")
+    print("--- %s seconds ---" % (time.time() - start_time))
+    print("CPU times percent info provided.")
+
+
 def cpu_info(report_time: str):
     """
-    Gather information about CPU usage
+    Report information about CPU usage
+    Call cpu_times_percent_info func which provide information about CPU times
     :param report_time:
     :return:
     """
@@ -117,6 +153,8 @@ def cpu_info(report_time: str):
         report.write("Logical processors: " + str(psutil.cpu_count()) + "  \n")
         report.write("Frequency: " + str(psutil.cpu_freq()[0]) + "  \n")
         report.write("\n")
+
+    cpu_times_percent_info(timestamp)
     print("--- %s seconds ---" % (time.time() - start_time))
     print("CPU info provided.")
 
@@ -144,7 +182,7 @@ def get_swap_usage() -> Dict[str, Union[int, float]]:
 
 def swap_info(report_time: str):
     """
-    Gather information about SWAP usage
+    Report information about SWAP usage
     :param report_time:
     :return:
     """
@@ -187,7 +225,7 @@ def get_mem_usage() -> Dict[str, Union[int, float]]:
 # Use one method
 def mem_info(report_time: str):
     """
-    Gather information about MEM usage
+    Report information about MEM usage
     Call swap_info func which provide information about SWAP usage
     :param report_time:
     :return:
@@ -209,7 +247,7 @@ def mem_info(report_time: str):
 
 def network_interfaces_status(report_time: str):
     """
-    Gather information about interfaces statuses
+    Report information about interfaces statuses
     :param report_time:
     :return:
     """
@@ -217,6 +255,7 @@ def network_interfaces_status(report_time: str):
     net_activity = psutil.net_if_stats()
     with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
         report.write("### INTERFACES STATUS  \n")
+        # Change hardcoded ?
         for i in net_activity.items():
             report.write(
                 "Connection Type Name: "
@@ -298,7 +337,7 @@ def network_speed(report_time: str):
 
 def net_info(report_time: str):
     """
-    Gather information about NET usage
+    Report information about NET usage
     Call network_interfaces_status func which provide interface statuses
     Call provider_info func which provide information about provider, some info were ignored
     Call network_speed func which provide information about upload & download internet connection speed
@@ -323,8 +362,10 @@ def net_info(report_time: str):
     print("Network info provided.")
 
 
-# print(psutil.cpu_times_percent())
 # print(psutil.test())
+
+# net_connections = psutil.net_connections()
+# print(json.dumps(net_connections, indent=4))
 
 
 if __name__ == "__main__":
