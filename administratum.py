@@ -14,7 +14,7 @@ import speedtest
 REPORT_NAME = "castle_report_"
 REPORT_FORMAT = ".md"
 
-# Start time
+# Time when program execution started
 start_time = time.time()
 
 # Using in provider_info func to retrieve information about provider
@@ -138,10 +138,12 @@ def cpu_times_percent_info(report_time: str):
     :return:
     """
     print("CPU times percent info providing...")
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("### CPU TIMES  \n")
         for key, value in get_cpu_percent_usage().items():
-            report.write(key + " : " + str(value) + "%  \n")
+            report.write(f"{key} : {value}%  \n")
         report.write("\n")
     print("--- %s seconds ---" % (time.time() - start_time))
     print("CPU times percent info provided.")
@@ -163,7 +165,7 @@ def cpu_info(report_time: str):
         report.write(f"Frequency: {psutil.cpu_freq()[0]}  \n")
         report.write("\n")
 
-    cpu_times_percent_info(timestamp)
+    cpu_times_percent_info(REPORT_TIME)
     print("--- %s seconds ---" % (time.time() - start_time))
     print("CPU info provided.")
 
