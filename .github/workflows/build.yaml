@@ -60,13 +60,13 @@ jobs:
         include:
           - os: windows-latest
             TARGET: windows
-            CMD_BUILD: python -m PyInstaller --clean --workpath /tmp/build --specpath /tmp -F reporter.py
-            OUT_FILE_NAME: reporter.exe
+            CMD_BUILD: python -m PyInstaller --clean --workpath /tmp/build --specpath /tmp -F administratum.py
+            OUT_FILE_NAME: administratum.exe
             ASSET_MIME: application/vnd.microsoft.portable-executable
           - os: ubuntu-latest
             TARGET: ubuntu
-            CMD_BUILD: python -m PyInstaller --clean --workpath /tmp/build --specpath /tmp -F reporter.py
-            OUT_FILE_NAME: reporter
+            CMD_BUILD: python -m PyInstaller --clean --workpath /tmp/build --specpath /tmp -F administratum.py
+            OUT_FILE_NAME: administratum
             ASSET_MIME: application/x-binary
 
     steps:
