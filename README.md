@@ -1,4 +1,4 @@
-# reporter
+# administratum
 
 Report about your castle
 
@@ -31,13 +31,13 @@ While the program running the information about runtime for every function is a 
 
 ### Example
 For only **Disk** report:  
-`reporter.exe --disk`
+`administratum.exe --disk`
 
 For **Disk** & **CPU** report:  
-`reporter.exe --disk --cpu`
+`administratum.exe --disk --cpu`
 
 For **Disk**, **CPU** & **Memory & swap** report:  
-`reporter.exe --disk --cpu --mem`
+`administratum.exe --disk --cpu --mem`
 
 For only **Network** report:  
-`reporter.exe --net`
+`administratum.exe --net`
