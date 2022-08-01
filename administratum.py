@@ -11,6 +11,17 @@ import psutil
 import requests
 import speedtest
 
+REPORT_NAME = "castle_report_"
+REPORT_FORMAT = ".md"
+
+# Start time
+start_time = time.time()
+
+# Using in provider_info func to retrieve information about provider
+IP_SITE = "http://ipinfo.io/"
+
+REPORT_TIME = datetime.now().strftime("%d.%m.%Y_%H.%M.%S")
+
 
 def get_args():
     """
@@ -18,8 +29,8 @@ def get_args():
     :return:
     """
     root_parser = argparse.ArgumentParser(
-        prog="reporter",
-        description="""Report about the castle""",
+        prog="administratum",
+        description="""Report about your castle""",
         epilog="""(c) CoolCoderCarl""",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
@@ -37,14 +48,6 @@ def get_args():
 # Shortening
 namespace = get_args().parse_args(sys.argv[1:])
 
-# Start time
-start_time = time.time()
-
-# Using in provider_info func to retrieve information about provider
-IP_SITE = "http://ipinfo.io/"
-
-timestamp = datetime.now().strftime("%d.%m.%Y_%H.%M.%S")
-
 
 def general_info(report_time: str):
     """
@@ -54,14 +57,16 @@ def general_info(report_time: str):
     """
     print("General info providing...")
     system = platform.uname()
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("## GENERAL INFO \n")
-        report.write("System: " + system.system + "  \n")
-        report.write("Node Name: " + system.node + "  \n")
-        report.write("Release: " + system.release + "  \n")
-        report.write("Version: " + system.version + "  \n")
-        report.write("Machine: " + system.machine + "  \n")
-        report.write("Processor: " + system.processor + "  \n")
+        report.write(f"System: {system.system}  \n")
+        report.write(f"Node Name: {system.node}  \n")
+        report.write(f"Release: {system.release}  \n")
+        report.write(f"Version: {system.version}  \n")
+        report.write(f"Machine: {system.machine}  \n")
+        report.write(f"Processor: {system.processor}  \n")
         report.write("\n")
     print("--- %s seconds ---" % (time.time() - start_time))
     print("General info provided.")
@@ -93,13 +98,15 @@ def disk_info(report_time: str):
     :return:
     """
     print("Disk info providing...")
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("## DISK USAGE  \n")
         for key in get_disk_usage():
             if "percent" in key.lower():
-                report.write(key + " : " + str(get_disk_usage()[key]) + "%  \n")
+                report.write(f"{key} : {get_disk_usage()[key]}%  \n")
             else:
-                report.write(key + " : " + str(get_disk_usage()[key]) + "GB  \n")
+                report.write(f"{key} : {get_disk_usage()[key]} GB  \n")
         report.write("\n")
     print("--- %s seconds ---" % (time.time() - start_time))
     print("Disk info provided.")
@@ -112,10 +119,12 @@ def cpu_info(report_time: str):
     :return:
     """
     print("CPU info providing...")
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("## CPU USAGE  \n")
-        report.write("Logical processors: " + str(psutil.cpu_count()) + "  \n")
-        report.write("Frequency: " + str(psutil.cpu_freq()[0]) + "  \n")
+        report.write(f"Logical processors: {psutil.cpu_count()}  \n")
+        report.write(f"Frequency: {psutil.cpu_freq()[0]}  \n")
         report.write("\n")
     print("--- %s seconds ---" % (time.time() - start_time))
     print("CPU info provided.")
@@ -149,13 +158,15 @@ def swap_info(report_time: str):
     :return:
     """
     print("SWAP info providing...")
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("### SWAP USAGE  \n")
         for key in get_swap_usage():
             if "percent" in key.lower():
-                report.write(key + " : " + str(get_swap_usage()[key]) + "%  \n")
+                report.write(f"{key} : {get_swap_usage()[key]}%  \n")
             else:
-                report.write(key + " : " + str(get_swap_usage()[key]) + "GB  \n")
+                report.write(f"{key} : {get_swap_usage()[key]} GB  \n")
         report.write("\n")
     print("--- %s seconds ---" % (time.time() - start_time))
     print("SWAP info provided.")
@@ -193,13 +204,15 @@ def mem_info(report_time: str):
     :return:
     """
     print("Memory info providing...")
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("## MEMORY USAGE  \n")
         for key in get_mem_usage():
             if "percent" in key.lower():
-                report.write(key + " : " + str(get_mem_usage()[key]) + "%  \n")
+                report.write(f"{key} : {get_mem_usage()[key]}%  \n")
             else:
-                report.write(key + " : " + str(get_mem_usage()[key]) + "GB  \n")
+                report.write(f"{key} : {get_mem_usage()[key]} GB  \n")
         report.write("\n")
 
     swap_info(report_time)
@@ -215,20 +228,13 @@ def network_interfaces_status(report_time: str):
     """
     print("Network interfaces info providing...")
     net_activity = psutil.net_if_stats()
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("### INTERFACES STATUS  \n")
         for i in net_activity.items():
             report.write(
-                "Connection Type Name: "
-                + str(i[0])
-                + " | UP: "
-                + str(i[1][0])
-                + " | Speed: "
-                + str(i[1][2])
-                + " MB"
-                + " | MTU: "
-                + str(i[1][3])
-                + " bytes"
+                f"Connection Type Name: {i[0]} | UP: {i[1][0]} | Speed: {i[1][2]}MB | MTU: {i[1][3]} bytes"
             )
             report.write("  \n")
         report.write("\n")
@@ -244,7 +250,9 @@ def isp_info(report_time: str):
     :return:
     """
     print("ISP info providing...")
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("### ISP INFO  \n")
         try:
             get_provider_info = json.loads(requests.get(IP_SITE).text)
@@ -252,9 +260,9 @@ def isp_info(report_time: str):
             for k, v in get_provider_info.items():
                 if k not in ignored_value:
                     if k == "ip":
-                        report.write(k.upper() + ": " + v + "  \n")
+                        report.write(f"{k.upper()} : {v}  \n")
                     else:
-                        report.write(k.capitalize() + ": " + v + "  \n")
+                        report.write(f"{k.capitalize()} : {v}  \n")
             report.write("\n")
         except ConnectionError as connection_error:
             report.write(str(connection_error))
@@ -274,24 +282,14 @@ def network_speed(report_time: str):
     speed_test = speedtest.Speedtest()
     download_speed = speed_test.download()
     upload_speed = speed_test.upload(pre_allocate=False)
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("### NETWORK SPEED  \n")
-        report.write(
-            "#### DOWNLOAD  \n"
-            + str(int(download_speed))
-            + " bytes. "
-            + str(int(download_speed / 1024))
-            + " MB."
-            + "  \n"
-        )
-        report.write(
-            "#### UPLOAD  \n"
-            + str(int(upload_speed))
-            + " bytes. "
-            + str((upload_speed / 1024))
-            + " MB."
-            + "  \n"
-        )
+        report.write("#### DOWNLOAD  \n")
+        report.write(f"{download_speed} bytes. {download_speed / 1024} MB.  \n")
+        report.write("#### UPLOAD  \n")
+        report.write(f"{upload_speed} bytes. {upload_speed / 1024} MB.  \n")
     print("--- %s seconds ---" % (time.time() - start_time))
     print("Network speed info provided.")
 
@@ -306,17 +304,19 @@ def net_info(report_time: str):
     :return:
     """
     print("Network info providing...")
-    with codecs.open("report_" + report_time + ".md", "a", "utf-8") as report:
+    with codecs.open(
+        f"{REPORT_NAME}{report_time}{REPORT_FORMAT}", "a", "utf-8"
+    ) as report:
         report.write("## NETWORK USAGE  \n")
         net_if_address = psutil.net_if_addrs()
         for i in net_if_address:
-            report.write(i + "  \n")
+            report.write(f"{i}  \n")
             # print(net_if_address[i][1])
-            report.write(str(net_if_address[i][1][1:3]) + "  \n")
+            report.write(f"{net_if_address[i][1][1:3]}  \n")
         report.write("\n")
 
     network_interfaces_status(report_time)
-    isp_info(timestamp)
+    isp_info(REPORT_TIME)
     network_speed(report_time)
 
     print("--- %s seconds ---" % (time.time() - start_time))
@@ -330,18 +330,18 @@ def net_info(report_time: str):
 if __name__ == "__main__":
     # Fix excluding
     if not (sys.argv[1:]):
-        general_info(timestamp)
-        disk_info(timestamp)
-        cpu_info(timestamp)
-        mem_info(timestamp)
-        net_info(timestamp)
+        general_info(REPORT_TIME)
+        disk_info(REPORT_TIME)
+        cpu_info(REPORT_TIME)
+        mem_info(REPORT_TIME)
+        net_info(REPORT_TIME)
     else:
-        general_info(timestamp)
+        general_info(REPORT_TIME)
         if namespace.disk:
-            disk_info(timestamp)
+            disk_info(REPORT_TIME)
         if namespace.cpu:
-            cpu_info(timestamp)
+            cpu_info(REPORT_TIME)
         if namespace.mem:
-            mem_info(timestamp)
+            mem_info(REPORT_TIME)
         if namespace.net:
-            net_info(timestamp)
+            net_info(REPORT_TIME)
